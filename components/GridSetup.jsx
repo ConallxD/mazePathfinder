@@ -44,6 +44,7 @@ class GridSetup extends Component {
   }
 
   startPathFind = () => {
+    this.resetPath();
     let path = new Pathfinder(this.gridObj, (state) => this.setGrid(state));
   };
 
@@ -57,13 +58,6 @@ class GridSetup extends Component {
       grid[this.gridObj.closedSet[i].i][this.gridObj.closedSet[i].j].color =
         "#09E85E";
     }
-    for (let i = 0; i < this.gridObj.cols; i++) {
-      for (let j = 0; j < this.gridObj.rows; j++) {
-        if (grid[i][j].wall) {
-          grid[i][j].color = "black";
-        }
-      }
-    }
 
     for (let i = 0; i < this.gridObj.currentPath.length; i++) {
       this.gridObj.currentPath[i].color = "green";
@@ -71,6 +65,13 @@ class GridSetup extends Component {
 
     for (let i = 0; i < this.gridObj?.completePath.length; i++) {
       this.gridObj.completePath[i].color = "blue";
+    }
+    for (let i = 0; i < this.gridObj.cols; i++) {
+      for (let j = 0; j < this.gridObj.rows; j++) {
+        if (grid[i][j].wall) {
+          grid[i][j].color = "black";
+        }
+      }
     }
   };
 
@@ -149,12 +150,9 @@ class GridSetup extends Component {
           )}
         </div>
         <button onClick={this.startPathFind} className={styles.button}>
-          Find Path
+          {this.gridObj.completePath.length ? "Reset" : "Find Path"}
         </button>
-        <button onClick={this.resetPath} className={styles.button}>
-          Reset
-        </button>
-        <button className="resetWallsBtn" onClick={this.clearWalls}>
+        <button onClick={this.clearWalls} className={styles.button}>
           Clear Walls
         </button>
       </>
