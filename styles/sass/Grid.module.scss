@@ -1,0 +1,22 @@
+.grid {
+  width: 90vh;
+  height: 90vh;
+  display: grid;
+  padding: 0px;
+}
+
+.square {
+  height: 100%;
+  width: 100%;
+  border: 1px solid black;
+  background-color: white;
+  display: grid;
+  align-items: center;
+}
+
+.button {
+  margin: 10px;
+  height: 50px;
+}
+
+/*# sourceMappingURL=Grid.module.css.map */
