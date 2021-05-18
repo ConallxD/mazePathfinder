@@ -5,7 +5,7 @@ export class Pathfinder {
     this.setGrid = setGrid;
     this.intervalRef = setInterval(() => {
       if (!this.finished) this.updateGrid();
-    }, 500);
+    }, 0);
     this.i = 0;
     this.j = 0;
     this.gridObj.openSet.push(this.gridObj.start);
@@ -30,6 +30,11 @@ export class Pathfinder {
 
   updateGrid() {
     let current;
+
+    if (this.finished) {
+      clearInterval(this.intervalRef);
+    }
+
     if (this.gridObj.openSet.length > 0) {
       let winner = 0;
       for (let i = 0; i < this.gridObj.openSet.length; i++) {
@@ -46,8 +51,6 @@ export class Pathfinder {
           this.gridObj.completePath.push(temp.previous);
           temp = temp.previous;
         }
-        console.log("Done!");
-        console.log(this.gridObj);
         this.finished = true;
         clearInterval(this.intervalRef);
       }
@@ -64,7 +67,7 @@ export class Pathfinder {
           let tempG = current.g + this.heuristic(current, neighbor);
           let newPath = false;
           if (this.gridObj.openSet.includes(neighbor)) {
-            if (tempG > neighbor.g) {
+            if (tempG < neighbor.g) {
               neighbor.g = tempG;
               newPath = true;
             }
@@ -80,7 +83,8 @@ export class Pathfinder {
           }
         }
       }
-    } else {
+    } else if (this.finished) {
+      this.stop();
     }
 
     this.gridObj.currentPath = [];
@@ -91,5 +95,9 @@ export class Pathfinder {
     }
 
     this.setGrid();
+  }
+
+  stop() {
+    clearInterval(this.intervalRef);
   }
 }

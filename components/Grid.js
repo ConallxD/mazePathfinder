@@ -35,6 +35,9 @@ export class Grid {
     let tempG = [...this.grid];
     for (let i = 0; i < tempG.length; i++) {
       tempG[i] = [...tempG[i]];
+      // for (let j = 0; j < tempG[i].length; j++) {
+      //   tempG[i][j] = { ...tempG[i][j] };
+      // }
     }
     return tempG;
   }

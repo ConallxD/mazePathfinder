@@ -3,7 +3,7 @@ import { Component } from "react";
 import { Grid } from "../components/Grid.js";
 import { Pathfinder } from "../components/Pathfinder";
 
-let cols = 10;
+let cols = 50;
 let rows = cols;
 
 let handleNodeStyle = (item, grid) => {
@@ -34,16 +34,46 @@ class GridSetup extends Component {
 
   setGrid() {
     this.colorGrid();
-    let tempG = [...this.state.grid];
-    for (let i = 0; i < tempG.length; i++) {
-      tempG[i] = [...tempG[i]];
-    }
-    this.setState({ grid: tempG });
+
+    this.setState({ grid: this.gridObj.copyGrid() });
   }
 
+  getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  genWalls = () => {
+    this.clearWalls();
+    let grid = this.gridObj.copyGrid();
+    for (let i = 0; i < this.gridObj.cols; i += 1) {
+      for (let j = 0; j < this.gridObj.rows; j += 1) {
+        grid[i][j].wall = true;
+      }
+    }
+
+    for (let i = 0; i < this.gridObj.cols; i += 2) {
+      for (let j = 0; j < this.gridObj.rows; j += 2) {
+        // if (Math.random() < 0.9) {
+        grid[i][j].wall = false;
+        // grid[i][j] = { ...grid[i][j], wall: true };
+        // }
+      }
+    }
+
+    for (let i = 0; i < this.gridObj.cols; i += 1) {
+      for (let j = 0; j < this.gridObj.rows; j += 1) {
+        if (grid[i][j].wall && Math.random() < 0.3) grid[i][j].wall = false;
+      }
+    }
+    this.gridObj.start.wall = false;
+    this.gridObj.end.wall = false;
+    this.setGrid();
+  };
+
   startPathFind = () => {
+    this.path?.stop();
     this.resetPath();
-    let path = new Pathfinder(this.gridObj, (state) => this.setGrid(state));
+    this.path = new Pathfinder(this.gridObj, (state) => this.setGrid(state));
   };
 
   colorGrid = () => {
@@ -61,7 +91,7 @@ class GridSetup extends Component {
     //   this.gridObj.currentPath[i].color = "#D1495B";
 
     for (let i = 0; i < this.gridObj?.completePath.length; i++) {
-      this.gridObj.completePath[i].color = "#2238fa";
+      this.gridObj.completePath[i].color = "#2cffff";
     }
     for (let i = 0; i < this.gridObj.cols; i++) {
       for (let j = 0; j < this.gridObj.rows; j++) {
@@ -122,7 +152,7 @@ class GridSetup extends Component {
   render() {
     let { grid } = this.state;
     return (
-      <>
+      <container className={styles.gridContainer}>
         <div
           onMouseDown={this.mouseDownCell}
           onMouseUp={this.mouseUpCell}
@@ -143,33 +173,39 @@ class GridSetup extends Component {
                 key={"box" + indexX + indexY}
                 className={styles.square}
               >
-                <container className={styles.scores}>
-                  <div className={styles.topLineScores}>
-                    <div className={styles.gScore}>
-                      {Math.round(item.g * 100) / 100}
-                      {/* {Math.round(item.g * 10)} */}
-                    </div>
-                    <div className={styles.hScore}>
-                      {Math.round(item.h * 100) / 100}
-                      {/* {Math.round(item.h * 10)} */}
-                    </div>
-                  </div>
-                  <div className={styles.fScore}>
-                    {Math.round(item.f * 100) / 100}
-                    {/* {Math.round(item.f * 10)} */}
-                  </div>
-                </container>
+                {/* <container className={styles.scores}>
+                  {!item.wall && (
+                    <>
+                      <div className={styles.topLineScores}>
+                        <div className={styles.gScore}>
+                          {Math.round(item.g * 100) / 100}
+                        </div>
+                        <div className={styles.hScore}>
+                          {Math.round(item.h * 100) / 100}
+                        </div>
+                      </div>
+                      <div className={styles.fScore}>
+                        {Math.round(item.f * 100) / 100}
+                      </div>
+                    </>
+                  )}
+                </container> */}
               </div>
             ))
           )}
         </div>
-        <button onClick={this.startPathFind} className={styles.button}>
-          {this.gridObj.completePath.length ? "Reset" : "Find Path"}
-        </button>
-        <button onClick={this.clearWalls} className={styles.button}>
-          Clear Walls
-        </button>
-      </>
+        <div className={styles.buttonContainer}>
+          <button onClick={this.startPathFind} className={styles.button}>
+            {this.gridObj.completePath.length ? "Reset" : "Find Path"}
+          </button>
+          <button onClick={this.clearWalls} className={styles.button}>
+            Clear Walls
+          </button>
+          <button onClick={this.genWalls} className={styles.button}>
+            Gen walls
+          </button>
+        </div>
+      </container>
     );
   }
 }
