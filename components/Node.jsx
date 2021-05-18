@@ -4,8 +4,8 @@ export default class Node {
     this.j = j;
     this.cols = cols;
     this.rows = rows;
-    this.f = Infinity; // path cost ro next node
-    this.g = Infinity; //path cost from start to current
+    this.f = 0; // path cost ro next node
+    this.g = 0; //path cost from start to current
     this.h = 0; // heuristic from current to end
     this.neighbors = [];
     this.previous = undefined;

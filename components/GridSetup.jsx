@@ -1,9 +1,9 @@
 import styles from "../styles/css/Grid.module.css";
-import { useState, Component } from "react";
+import { Component } from "react";
 import { Grid } from "../components/Grid.js";
 import { Pathfinder } from "../components/Pathfinder";
 
-let cols = 50;
+let cols = 10;
 let rows = cols;
 
 let handleNodeStyle = (item, grid) => {
@@ -12,13 +12,11 @@ let handleNodeStyle = (item, grid) => {
   if (item.i === grid.start.i && item.j === grid.start.j) {
     style = {
       ...style,
-      border: "1px solid green",
       backgroundColor: "#86ec27",
     };
   } else if (item.i === grid.end.i && item.j === grid.end.j) {
     style = {
       ...style,
-      border: "1px solid #bbff00",
       backgroundColor: "#ec2727",
     };
   }
@@ -52,24 +50,23 @@ class GridSetup extends Component {
     let grid = this.gridObj.copyGrid();
     for (let i = 0; i < this.gridObj.openSet.length; i++) {
       grid[this.gridObj.openSet[i].i][this.gridObj.openSet[i].j].color =
-        "magenta";
+        "#95e95d";
     }
     for (let i = 0; i < this.gridObj.closedSet.length; i++) {
       grid[this.gridObj.closedSet[i].i][this.gridObj.closedSet[i].j].color =
-        "#09E85E";
+        "#ff1e3c";
     }
 
-    for (let i = 0; i < this.gridObj.currentPath.length; i++) {
-      this.gridObj.currentPath[i].color = "green";
-    }
+    // for (let i = 0; i < this.gridObj.currentPath.length; i++) {
+    //   this.gridObj.currentPath[i].color = "#D1495B";
 
     for (let i = 0; i < this.gridObj?.completePath.length; i++) {
-      this.gridObj.completePath[i].color = "blue";
+      this.gridObj.completePath[i].color = "#2238fa";
     }
     for (let i = 0; i < this.gridObj.cols; i++) {
       for (let j = 0; j < this.gridObj.rows; j++) {
         if (grid[i][j].wall) {
-          grid[i][j].color = "black";
+          grid[i][j].color = "#86BBD8";
         }
       }
     }
@@ -94,9 +91,9 @@ class GridSetup extends Component {
     this.setGrid();
   };
 
-  setWall = (item) => {
-    item.wall = true;
-    item.color = "black";
+  toggleWall = (item) => {
+    item.wall = !item.wall;
+    item.color = "#001b2e";
     this.setGrid();
   };
 
@@ -111,7 +108,7 @@ class GridSetup extends Component {
 
   mouseOverCell = (item) => {
     if (this.mouseDown) {
-      this.setWall(item);
+      this.toggleWall(item);
     }
   };
 
@@ -140,12 +137,29 @@ class GridSetup extends Component {
               <div
                 onMouseOver={() => this.mouseOverCell(item)}
                 onClick={() => {
-                  this.setWall(item);
+                  this.toggleWall(item);
                 }}
                 style={handleNodeStyle(item, this.gridObj)}
                 key={"box" + indexX + indexY}
                 className={styles.square}
-              ></div>
+              >
+                <container className={styles.scores}>
+                  <div className={styles.topLineScores}>
+                    <div className={styles.gScore}>
+                      {Math.round(item.g * 100) / 100}
+                      {/* {Math.round(item.g * 10)} */}
+                    </div>
+                    <div className={styles.hScore}>
+                      {Math.round(item.h * 100) / 100}
+                      {/* {Math.round(item.h * 10)} */}
+                    </div>
+                  </div>
+                  <div className={styles.fScore}>
+                    {Math.round(item.f * 100) / 100}
+                    {/* {Math.round(item.f * 10)} */}
+                  </div>
+                </container>
+              </div>
             ))
           )}
         </div>

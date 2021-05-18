@@ -2,21 +2,48 @@
   width: 90vh;
   height: 90vh;
   display: grid;
-  padding: 0px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #1f1f1f;
+  align-items: center;
 }
 
 .square {
   height: 100%;
   width: 100%;
   border: 1px solid black;
-  background-color: white;
+  border-radius: 10px;
+  background-color: #001b2e;
   display: grid;
   align-items: center;
+  transition: 0.3s all ease-in-out;
+  user-select: none;
+  box-sizing: border-box;
 }
 
 .button {
   margin: 10px;
   height: 50px;
+}
+
+.scores {
+  display: grid;
+  color: black;
+}
+
+.topLineScores {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+.gScore {
+  margin-right: 1em;
+}
+
+.fScore {
+  font-size: 1.5em;
+  margin-left: 10px;
 }
 
 /*# sourceMappingURL=Grid.module.css.map */
