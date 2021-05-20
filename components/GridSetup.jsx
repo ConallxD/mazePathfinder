@@ -62,12 +62,13 @@ class GridSetup extends Component {
 
     for (let i = 0; i < this.gridObj.cols; i += 1) {
       for (let j = 0; j < this.gridObj.rows; j += 1) {
-        if (grid[i][j].wall && Math.random() < 0.3) grid[i][j].wall = false;
+        if (grid[i][j].wall && Math.random() < 0.35) grid[i][j].wall = false;
       }
     }
     this.gridObj.start.wall = false;
     this.gridObj.end.wall = false;
     this.setGrid();
+    this.startPathFind();
   };
 
   startPathFind = () => {
@@ -78,25 +79,26 @@ class GridSetup extends Component {
 
   colorGrid = () => {
     let grid = this.gridObj.copyGrid();
-    for (let i = 0; i < this.gridObj.openSet.length; i++) {
-      grid[this.gridObj.openSet[i].i][this.gridObj.openSet[i].j].color =
-        "#95e95d";
-    }
+    // for (let i = 0; i < this.gridObj.openSet.length; i++) {
+    //   grid[this.gridObj.openSet[i].i][this.gridObj.openSet[i].j].color =
+    //     "#95e95d";
+    // }
     for (let i = 0; i < this.gridObj.closedSet.length; i++) {
       grid[this.gridObj.closedSet[i].i][this.gridObj.closedSet[i].j].color =
-        "#ff1e3c";
+        "#f3558e";
     }
 
-    // for (let i = 0; i < this.gridObj.currentPath.length; i++) {
-    //   this.gridObj.currentPath[i].color = "#D1495B";
+    for (let i = 0; i < this.gridObj.currentPath.length; i++) {
+      this.gridObj.currentPath[i].color = "#4b49d1";
+    }
 
     for (let i = 0; i < this.gridObj?.completePath.length; i++) {
-      this.gridObj.completePath[i].color = "#2cffff";
+      this.gridObj.completePath[i].color = "#faee1c";
     }
     for (let i = 0; i < this.gridObj.cols; i++) {
       for (let j = 0; j < this.gridObj.rows; j++) {
         if (grid[i][j].wall) {
-          grid[i][j].color = "#86BBD8";
+          grid[i][j].color = "#482ff7";
         }
       }
     }
@@ -123,7 +125,7 @@ class GridSetup extends Component {
 
   toggleWall = (item) => {
     item.wall = !item.wall;
-    item.color = "#001b2e";
+    item.color = "#86BBD8";
     this.setGrid();
   };
 
@@ -134,6 +136,7 @@ class GridSetup extends Component {
       }
     }
     this.setGrid();
+    this.startPathFind();
   };
 
   mouseOverCell = (item) => {

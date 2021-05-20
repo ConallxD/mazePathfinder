@@ -10,6 +10,7 @@ export class Pathfinder {
     this.j = 0;
     this.gridObj.openSet.push(this.gridObj.start);
     this.finished = false;
+    this.noSolution = true;
   }
 
   removeFromArray(arr, elt) {
@@ -83,17 +84,17 @@ export class Pathfinder {
           }
         }
       }
-    } else if (this.finished) {
+    } else {
       this.stop();
     }
-
-    this.gridObj.currentPath = [];
-    let temp = current;
-    while (temp?.previous) {
-      this.gridObj.currentPath.push(temp.previous);
-      temp = temp.previous;
+    if (!this.noSolution) {
+      this.gridObj.currentPath = [];
+      let temp = current;
+      while (temp?.previous) {
+        this.gridObj.currentPath.push(temp.previous);
+        temp = temp.previous;
+      }
     }
-
     this.setGrid();
   }
 
