@@ -4,7 +4,7 @@ import { Grid } from "../components/Grid.js";
 import { Pathfinder } from "../components/Pathfinder";
 import { GenerateMaze } from "../components/generateMaze";
 
-let cols = 10;
+let cols = 50;
 let rows = cols;
 
 let handleNodeStyle = (item, grid) => {
@@ -97,7 +97,11 @@ class GridSetup extends Component {
   };
 
   mazeHandler = () => {
-    new GenerateMaze(this.gridObj, (state) => this.setGrid(state));
+    this.gridObj.reset();
+    this.genMaze?.reset();
+    this.genMaze = new GenerateMaze(this.gridObj, (state) =>
+      this.setGrid(state)
+    );
   };
 
   startPathFind = () => {
@@ -205,7 +209,7 @@ class GridSetup extends Component {
                 key={"box" + indexX + indexY}
                 className={styles.square}
               >
-                {`i:${item.i}`} {`j:${item.j}`}
+                {/* {`i:${item.i}`} {`j:${item.j}`} */}
                 {/* <container className={styles.scores}>
                   {!item.wall && (
                     <>

@@ -31,6 +31,14 @@ export class Grid {
     this.start.color = "cyan";
   }
 
+  reset() {
+    for (let i = 0; i < this.cols; i++) {
+      for (let j = 0; j < this.rows; j++) {
+        this.grid[i][j].visited = false;
+      }
+    }
+  }
+
   copyGrid() {
     let tempG = [...this.grid];
     for (let i = 0; i < tempG.length; i++) {

@@ -27,6 +27,33 @@ export default class Node {
     this.visited = false;
   }
 
+  iCanGo = (node) => {
+    let deltaI = node.i - this.i; // - node.i;
+    let deltaJ = node.j - this.j; // - node.j;
+
+    if (
+      Math.abs(deltaI) === Math.abs(deltaJ) ||
+      Math.abs(deltaI) > 1 ||
+      Math.abs(deltaJ) > 1
+    ) {
+      console.error("nah mate");
+      return;
+    }
+
+    if (deltaI === 1) {
+      return this.canGo.right;
+    }
+    if (deltaI === -1) {
+      return this.canGo.left;
+    }
+    if (deltaJ === 1) {
+      return this.canGo.down;
+    }
+    if (deltaJ === -1) {
+      return this.canGo.up;
+    }
+  };
+
   index = (i, j) => {
     if (i < 0 || j < 0 || i > cols - 1 || rows - 1) {
       return -1;

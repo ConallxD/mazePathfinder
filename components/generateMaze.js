@@ -7,7 +7,18 @@ export class GenerateMaze {
     this.setGrid = setGrid;
     this.intervalRef = setInterval(() => {
       if (!this.finished) this.updateGrid();
-    }, 50);
+    }, 0);
+    this.pathStack = [];
+    // Make an initial cell the current cell and mark it as visited
+    this.cell = this.gridObj.start;
+    this.gridObj.start.visited = true;
+    this.pathStack.push(this.cell);
+  }
+
+  reset() {
+    this.intervalRef = setInterval(() => {
+      if (!this.finished) this.updateGrid();
+    }, 0);
     this.pathStack = [];
     // Make an initial cell the current cell and mark it as visited
     this.cell = this.gridObj.start;
@@ -71,6 +82,9 @@ export class GenerateMaze {
         this.cell = this.pathStack.pop();
         this.updateGrid();
       }
+    } else {
+      this.finished = true;
+      clearInterval(this.intervalRef);
     }
     this.setGrid();
   }
