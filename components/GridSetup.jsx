@@ -2,8 +2,9 @@ import styles from "../styles/css/Grid.module.css";
 import { Component } from "react";
 import { Grid } from "../components/Grid.js";
 import { Pathfinder } from "../components/Pathfinder";
+import { GenerateMaze } from "../components/generateMaze";
 
-let cols = 50;
+let cols = 10;
 let rows = cols;
 
 let handleNodeStyle = (item, grid) => {
@@ -20,6 +21,31 @@ let handleNodeStyle = (item, grid) => {
       backgroundColor: "#ec2727",
     };
   }
+
+  if (!item.canGo.up) {
+    style = {
+      ...style,
+      borderTop: "1px solid black",
+    };
+  }
+  if (!item.canGo.down) {
+    style = {
+      ...style,
+      borderBottom: "1px solid black",
+    };
+  }
+  if (!item.canGo.left) {
+    style = {
+      ...style,
+      borderLeft: "1px solid black",
+    };
+  }
+  if (!item.canGo.right) {
+    style = {
+      ...style,
+      borderRight: "1px solid black",
+    };
+  }
   return style;
 };
 
@@ -34,7 +60,6 @@ class GridSetup extends Component {
 
   setGrid() {
     this.colorGrid();
-
     this.setState({ grid: this.gridObj.copyGrid() });
   }
 
@@ -69,6 +94,10 @@ class GridSetup extends Component {
     this.gridObj.end.wall = false;
     this.setGrid();
     this.startPathFind();
+  };
+
+  mazeHandler = () => {
+    new GenerateMaze(this.gridObj, (state) => this.setGrid(state));
   };
 
   startPathFind = () => {
@@ -176,6 +205,7 @@ class GridSetup extends Component {
                 key={"box" + indexX + indexY}
                 className={styles.square}
               >
+                {`i:${item.i}`} {`j:${item.j}`}
                 {/* <container className={styles.scores}>
                   {!item.wall && (
                     <>
@@ -206,6 +236,9 @@ class GridSetup extends Component {
           </button>
           <button onClick={this.genWalls} className={styles.button}>
             Gen walls
+          </button>
+          <button onClick={this.mazeHandler} className={styles.button}>
+            Create Maze
           </button>
         </div>
       </container>

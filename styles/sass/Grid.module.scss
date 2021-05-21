@@ -6,12 +6,12 @@
   width: 90vh;
   height: 90vh;
   display: grid;
+  grid-auto-flow: column;
   padding: 10px;
   margin: 10px;
   background-color: #86bbd8;
   align-items: center;
 }
-
 .square {
   margin-left: auto;
   margin-right: auto;
