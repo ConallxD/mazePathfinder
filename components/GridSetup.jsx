@@ -3,8 +3,9 @@ import { Component } from "react";
 import { Grid } from "../components/Grid.js";
 import { Pathfinder } from "../components/Pathfinder";
 import { GenerateMaze } from "../components/generateMaze";
+import { utils } from "../components/utils";
 
-let cols = 50;
+let cols = 25;
 let rows = cols;
 
 let handleNodeStyle = (item, grid) => {
@@ -25,25 +26,25 @@ let handleNodeStyle = (item, grid) => {
   if (!item.canGo.up) {
     style = {
       ...style,
-      borderTop: "1px solid black",
+      borderTop: "1px solid #1eff00",
     };
   }
   if (!item.canGo.down) {
     style = {
       ...style,
-      borderBottom: "1px solid black",
+      borderBottom: "1px solid #1eff00",
     };
   }
   if (!item.canGo.left) {
     style = {
       ...style,
-      borderLeft: "1px solid black",
+      borderLeft: "1px solid #1eff00",
     };
   }
   if (!item.canGo.right) {
     style = {
       ...style,
-      borderRight: "1px solid black",
+      borderRight: "1px solid #1eff00",
     };
   }
   return style;
@@ -96,12 +97,16 @@ class GridSetup extends Component {
     this.startPathFind();
   };
 
-  mazeHandler = () => {
+  mazeHandler = (skipUpdate) => {
     this.gridObj.reset();
     this.genMaze?.reset();
-    this.genMaze = new GenerateMaze(this.gridObj, (state) =>
-      this.setGrid(state)
-    );
+    let updateFunc = !skipUpdate ? (state) => this.setGrid(state) : () => {};
+    this.genMaze = new GenerateMaze(this.gridObj, updateFunc);
+  };
+
+  fastMazeHandler = () => {
+    this.mazeHandler(true);
+    this.setGrid();
   };
 
   startPathFind = () => {
@@ -118,16 +123,29 @@ class GridSetup extends Component {
     // }
     for (let i = 0; i < this.gridObj.closedSet.length; i++) {
       grid[this.gridObj.closedSet[i].i][this.gridObj.closedSet[i].j].color =
-        "#f3558e";
+        "magenta";
     }
 
     for (let i = 0; i < this.gridObj.currentPath.length; i++) {
       this.gridObj.currentPath[i].color = "#4b49d1";
     }
 
-    for (let i = 0; i < this.gridObj?.completePath.length; i++) {
-      this.gridObj.completePath[i].color = "#faee1c";
+    let { length } = this.gridObj?.completePath;
+    for (let i = 0; i < length; i++) {
+      this.gridObj.completePath[i].color = utils.hslToRgb(
+        (360 / length) * i,
+        70,
+        50
+      );
     }
+    // for (let i = 0; i < this.gridObj?.completePath.length; i++) {
+    //   this.gridObj.completePath[i].color = utils.hslToRgb(i * 10, 100, 100);
+    // }
+    // for (let i = 0; i < this.gridObj.completePath.length; i++) {
+    //   grid[this.gridObj.completePath[i].i][
+    //     this.gridObj.completePath[i].j
+    //   ].color = utils.hslToRgb(i * 100, 100, 100);
+    // }
     for (let i = 0; i < this.gridObj.cols; i++) {
       for (let j = 0; j < this.gridObj.rows; j++) {
         if (grid[i][j].wall) {
@@ -243,6 +261,9 @@ class GridSetup extends Component {
           </button>
           <button onClick={this.mazeHandler} className={styles.button}>
             Create Maze
+          </button>
+          <button onClick={this.fastMazeHandler} className={styles.button}>
+            Fast maze
           </button>
         </div>
       </container>

@@ -26,7 +26,7 @@ export class Pathfinder {
 
   manhattanDistance = (a, b) => {
     let d = Math.abs(a.i - b.i) + Math.abs(a.j - b.j);
-    return d;
+    return this.heuristic(a, b);
   };
 
   updateGrid() {
@@ -52,6 +52,8 @@ export class Pathfinder {
           this.gridObj.completePath.push(temp.previous);
           temp = temp.previous;
         }
+        this.gridObj.reset();
+        this.setGrid();
         this.finished = true;
         clearInterval(this.intervalRef);
       }
@@ -64,7 +66,11 @@ export class Pathfinder {
 
       for (let i = 0; i < neighbors.length; i++) {
         let neighbor = neighbors[i];
-        if (!this.gridObj.closedSet.includes(neighbor) && !neighbor.wall) {
+        if (
+          !this.gridObj.closedSet.includes(neighbor) &&
+          !neighbor.wall &&
+          current.iCanGo(neighbor)
+        ) {
           let tempG = current.g + this.heuristic(current, neighbor);
           let newPath = false;
           if (this.gridObj.openSet.includes(neighbor)) {

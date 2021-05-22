@@ -13,6 +13,7 @@ export class GenerateMaze {
     this.cell = this.gridObj.start;
     this.gridObj.start.visited = true;
     this.pathStack.push(this.cell);
+    this.finished = false;
   }
 
   reset() {
@@ -52,7 +53,7 @@ export class GenerateMaze {
   //   }
   // };
 
-  updateGrid() {
+  updateGrid(skipUpdate = false) {
     // this.cell.removeWallsBetween(this.cell.neighborsObj.right);
     // this.cell = this.cell.neighborsObj.right;
     // While there are unvisited cells
@@ -86,6 +87,6 @@ export class GenerateMaze {
       this.finished = true;
       clearInterval(this.intervalRef);
     }
-    this.setGrid();
+    if (!skipUpdate) this.setGrid();
   }
 }

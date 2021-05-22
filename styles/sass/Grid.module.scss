@@ -9,7 +9,7 @@
   grid-auto-flow: column;
   padding: 10px;
   margin: 10px;
-  background-color: #86bbd8;
+  background-color: #000000;
   align-items: center;
 }
 .square {
@@ -17,11 +17,10 @@
   margin-right: auto;
   height: 100%;
   width: 100%;
-  border-radius: 1px;
-  background-color: #86bbd8;
+  background-color: #000000;
   display: grid;
   align-items: center;
-  transition: 0.2s all ease-in-out;
+  transition: 1s all ease-in-out;
   user-select: none;
   box-sizing: border-box;
   &:hover {

@@ -32,9 +32,12 @@ export class Grid {
   }
 
   reset() {
+    this.closedSet = [];
+    this.openSet = [];
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.grid[i][j].visited = false;
+        this.grid[i][j].color = "black";
       }
     }
   }
